@@ -1,0 +1,31 @@
+{
+  "name": "React + pnpm Hands-on",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:20",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
+
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y xdg-utils && curl -fsSL https://app.factory.ai/cli | sh && npm install -g @google/gemini-cli && sudo corepack enable",
+
+  "remoteEnv": {
+    "PATH": "${containerEnv:PATH}:/home/vscode/.local/bin"
+  },
+
+  "portsAttributes": {
+    "5173": {
+      "label": "Vite App",
+      "onAutoForward": "notify"
+    }
+  },
+  "forwardPorts": [5173],
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "bradlc.vscode-tailwindcss"
+      ]
+    }
+  }
+}
