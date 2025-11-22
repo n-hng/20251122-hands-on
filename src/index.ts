@@ -1,6 +1,7 @@
 import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { TodoStore } from './store';
+import { getQuote } from './quoteService';
 
 const app = express();
 const port = 3000;
@@ -22,7 +23,7 @@ app.get('/todos', async (req, res) => {
 // POST /todos
 app.post('/todos', async (req, res) => {
     try {
-        const { title } = req.body;
+        const { title, dueDate } = req.body;
         if (!title) {
             res.status(400).json({ error: 'Title is required' });
             return;
@@ -33,10 +34,16 @@ app.post('/todos', async (req, res) => {
             return;
         }
 
+        const quoteData = getQuote(title);
+
         const newTodo = {
             id: uuidv4(),
             title,
-            completed: false
+            completed: false,
+            createdAt: new Date().toISOString(),
+            quote: quoteData.text,
+            quoteAuthor: quoteData.author,
+            dueDate
         };
 
         await store.add(newTodo);
@@ -50,14 +57,14 @@ app.post('/todos', async (req, res) => {
 app.put('/todos/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const { title, completed } = req.body;
+        const { title, completed, dueDate } = req.body;
 
         if (title && title.length > 30) {
             res.status(400).json({ error: 'Title must be 30 characters or less' });
             return;
         }
 
-        const updatedTodo = await store.update(id, { title, completed });
+        const updatedTodo = await store.update(id, { title, completed, dueDate });
 
         if (!updatedTodo) {
             res.status(404).json({ error: 'Todo not found' });

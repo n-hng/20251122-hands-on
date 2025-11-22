@@ -23,13 +23,16 @@ graph LR
 *   **Key Logic:**
     *   `fetchTodos()`: GET with timestamp to avoid cache.
     *   `renderTodos()`: Clear and rebuild DOM list.
-    *   Event Listeners: Handle Add, Toggle, Delete, Clear All actions.
+    *   `applyFontSize()`: Update CSS variables based on user selection.
+    *   `sortTodos()`: Client-side sorting based on user criteria (Deadline/Created).
+    *   Event Listeners: Handle Add, Toggle, Delete, Clear All, Font Change, Sort Change actions.
 
 ### 2.2. Server (Backend)
 *   **Responsibility:** Serve static assets, validate API requests, manage data persistence.
 *   **Key Components:**
     *   `src/index.ts`: Route definitions, request validation (30 char limit).
     *   `src/store.ts`: Abstracted file I/O operations (`readData`, `writeData`, `add`, `update`, `delete`, `deleteAll`).
+    *   `src/quoteService.ts`: Dictionary-based quote matching logic.
 
 ## 3. Key User Flows
 
@@ -41,20 +44,24 @@ sequenceDiagram
     participant U as User
     participant B as Browser
     participant S as Server
+    participant Q as QuoteService
     participant DB as todos.json
 
-    U->>B: Input Title + Click Add
+    U->>B: Input Title + DueDate + Click Add
     B->>B: Check Length <= 30 (HTML5)
-    B->>S: POST /todos {title}
+    B->>S: POST /todos {title, dueDate}
     S->>S: Validate Length <= 30
+    S->>Q: getQuote(title)
+    Q-->>S: {text, author}
     S->>DB: Read File
-    S->>DB: Write File (Append)
+    S->>DB: Write File (Append with Quote & DueDate)
     S-->>B: 201 Created
     B->>B: Clear Input
     B->>S: GET /todos?t=timestamp
     S->>DB: Read File
     S-->>B: 200 OK (List)
-    B->>U: Update UI List
+    B->>B: Calculate Deadline Color
+    B->>U: Update UI (Show Todo + Quote + Deadline)
 ```
 
 ### 3.2. Delete All Flow

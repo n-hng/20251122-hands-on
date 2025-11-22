@@ -28,6 +28,10 @@ Creates a new task with a generated UUID.
 *   **Validation:**
     *   `title` required.
     *   `title` length <= 30 characters.
+*   **Processing:**
+    *   Generates UUID v4.
+    *   Sets `createdAt` to current ISO timestamp.
+    *   Sets `completed` to false.
 *   **Response:**
     *   `201 Created` (The created Todo object)
     *   `400 Bad Request` (Missing title or too long)

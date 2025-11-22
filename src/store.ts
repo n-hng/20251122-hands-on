@@ -5,6 +5,10 @@ export interface Todo {
     id: string;
     title: string;
     completed: boolean;
+    createdAt?: string;
+    quote?: string;
+    quoteAuthor?: string;
+    dueDate?: string;
 }
 
 const DATA_FILE = path.join(__dirname, '../todos.json');

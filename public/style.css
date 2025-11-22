@@ -53,6 +53,7 @@ button:hover {
     list-style: none;
     padding: 0;
     margin: 0;
+    --list-font-size: 16px; /* Default size */
 }
 
 .todo-item {
@@ -61,20 +62,56 @@ button:hover {
     padding: 1rem;
     border-bottom: 1px solid #eee;
     gap: 10px;
+    font-size: var(--list-font-size);
 }
 
 .todo-item:last-child {
     border-bottom: none;
 }
 
-.todo-item.completed span {
+.todo-item.completed .todo-title {
     text-decoration: line-through;
     color: #888;
 }
 
-.todo-item span {
+.todo-content {
     flex: 1;
+    display: flex;
+    flex-direction: column;
     cursor: pointer;
+}
+
+.todo-title {
+    /* flex: 1; removed flex:1 as it is now inside todo-content */
+}
+
+.todo-quote {
+    font-size: 0.85em;
+    color: #7f8c8d;
+    font-style: italic;
+    margin-top: 4px;
+}
+
+.todo-date {
+    font-size: 12px;
+    color: #999;
+    margin-right: 10px;
+    white-space: nowrap;
+}
+
+.todo-item.expired {
+    background-color: #ffebee;
+    border-left: 4px solid #e74c3c;
+}
+
+.todo-item.warning {
+    background-color: #fff3e0;
+    border-left: 4px solid #f39c12;
+}
+
+.todo-item.notice {
+    background-color: #e3f2fd;
+    border-left: 4px solid #3498db;
 }
 
 .delete-btn {
@@ -85,4 +122,27 @@ button:hover {
 
 .delete-btn:hover {
     background-color: #c0392b;
+}
+
+/* Empty State Styles */
+.empty-state {
+    text-align: center;
+    padding: 2rem 0;
+    color: #95a5a6;
+}
+
+.ghost-svg {
+    animation: float 3s ease-in-out infinite;
+}
+
+.empty-text {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
 }

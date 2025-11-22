@@ -19,6 +19,10 @@ interface Todo {
     id: string;         // UUID v4
     title: string;      // Max 30 characters
     completed: boolean; // Task status
+    createdAt?: string; // ISO 8601 Date string
+    quote?: string;     // Motivational quote
+    quoteAuthor?: string; // Author of the quote
+    dueDate?: string;   // ISO 8601 Date string (Deadline)
 }
 ```
 
@@ -28,21 +32,28 @@ interface Todo {
 | Method | Endpoint       | Description | Validation |
 |--------|---------------|-------------|------------|
 | GET    | `/todos`      | Retrieve all tasks. | - |
-| POST   | `/todos`      | Create a new task. | `title` is required. Max 30 chars. |
-| PUT    | `/todos/:id`  | Update task status or title. | Max 30 chars if `title` provided. |
+| POST   | `/todos`      | Create a new task. | `title` required. `dueDate` optional. Max 30 chars. |
+| PUT    | `/todos/:id`  | Update task status, title, or deadline. | Max 30 chars if `title` provided. |
 | DELETE | `/todos/:id`  | Delete a specific task. | - |
 | DELETE | `/todos`      | Delete ALL tasks. | - |
 
 ### 4.2. User Interface (Frontend)
 The frontend is a Single Page Application (SPA) served statically.
 
-*   **List View:** Displays all tasks. Completed tasks are visually struck through.
-*   **Add Task:** Input field with an "Add" button.
+*   **List View:** Displays all tasks with their creation date and deadline.
+    *   Completed tasks are visually struck through.
+    *   Deadline coloring:
+        *   Blue: < 24 hours remaining.
+        *   Orange: < 1 hour remaining.
+        *   Red: Expired (Overdue).
+*   **Add Task:** Input field for title and DateTime picker for deadline.
     *   Input prevents typing more than 30 characters (`maxlength="30"`).
     *   Pressing "Enter" key also submits.
 *   **Toggle Status:** Clicking a task item or checkbox toggles its completion state.
 *   **Delete Task:** A "Delete" button next to each item. Requires confirmation dialog.
 *   **Clear All:** A "Clear All" button to remove all tasks. Requires strict confirmation dialog.
+*   **Font Size Selector:** A dropdown menu to select font size (Small/Medium/Large). Preference is saved in browser storage.
+*   **Sort Order Selector:** A dropdown menu to sort tasks by Deadline (Earliest/Latest) or Created Date (Oldest/Newest). Default is Deadline (Earliest).
 *   **Real-time Updates:** The UI updates immediately after operations by re-fetching data from the server (with cache-busting).
 
 ## 5. Non-Functional Requirements

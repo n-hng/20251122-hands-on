@@ -8,11 +8,44 @@
 </head>
 <body>
     <div class="container">
-        <h1>Todo List</h1>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h1 style="margin: 0; flex-grow: 1;">Todo List</h1>
+            <div style="display: flex; gap: 10px;">
+                <select id="sortSelect" style="padding: 5px;">
+                    <option value="dueAsc">Deadline (Earliest)</option>
+                    <option value="dueDesc">Deadline (Latest)</option>
+                    <option value="createdAsc">Created (Oldest)</option>
+                    <option value="createdDesc">Created (Newest)</option>
+                </select>
+                <select id="fontSizeSelect" style="padding: 5px;">
+                    <option value="small">Small</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="large">Large</option>
+                </select>
+            </div>
+        </div>
         
         <div class="add-todo">
             <input type="text" id="newTodoInput" placeholder="What needs to be done?" maxlength="30">
+            <input type="datetime-local" id="newTodoDueDate" style="flex: 0.4;">
             <button id="addTodoBtn">Add</button>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <svg width="120" height="120" viewBox="0 0 120 120" class="ghost-svg">
+                <!-- Ghost Body -->
+                <path d="M60 20 C 30 20, 20 50, 20 110 L 30 100 L 40 110 L 50 100 L 60 110 L 70 100 L 80 110 L 90 100 L 100 110 C 100 50, 90 20, 60 20 Z" fill="#ecf0f1" stroke="#bdc3c7" stroke-width="2"/>
+                <!-- Eyes -->
+                <ellipse cx="45" cy="50" rx="5" ry="8" fill="#2c3e50"/>
+                <ellipse cx="75" cy="50" rx="5" ry="8" fill="#2c3e50"/>
+                <!-- Cheeks -->
+                <circle cx="40" cy="65" r="4" fill="#e74c3c" opacity="0.3"/>
+                <circle cx="80" cy="65" r="4" fill="#e74c3c" opacity="0.3"/>
+                <!-- Mouth -->
+                <path d="M55 75 Q 60 80 65 75" stroke="#2c3e50" stroke-width="2" fill="none"/>
+            </svg>
+            <p class="empty-text">No tasks yet! Boo! 👻</p>
         </div>
 
         <ul id="todoList" class="todo-list">
